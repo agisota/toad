@@ -124,7 +124,9 @@ class PathSearch(containers.VerticalGroup):
         self.set_reactive(PathSearch.root, root)
         self.root = root
         self.fuzzy_index = FuzzyIndex()
-        self.pool = concurrent.futures.InterpreterPoolExecutor()
+        self.pool = concurrent.futures.InterpreterPoolExecutor(
+            thread_name_prefix=f"fuzzy-path-search-{root}"
+        )
         self.search_cache: LRUCache[str, list[tuple[float, Sequence[int], str]]] = (
             LRUCache(1024)
         )
@@ -191,7 +193,7 @@ class PathSearch(containers.VerticalGroup):
         # fuzzy_search.cache.grow(len(self.paths))
         display_paths = await self.fuzzy_index.search(search)
 
-        if len(display_paths) > 40:
+        if len(display_paths) > 20:
             if (scored_paths := self.search_cache.get(search)) is None:
                 scored_paths = await asyncio.to_thread(
                     self.fuzzy_match_paths, search, display_paths
@@ -215,7 +217,7 @@ class PathSearch(containers.VerticalGroup):
 
         scores = [
             (score, highlights, self.highlight_path(path))
-            for score, highlights, path in scored_paths[:20]
+            for score, highlights, path in scored_paths[:30]
         ]
 
         def highlight_offsets(path: Content, offsets: Sequence[int]) -> Content:
@@ -225,10 +227,7 @@ class PathSearch(containers.VerticalGroup):
 
         self.option_list.set_options(
             [
-                Option(
-                    highlight_offsets(path, offsets) if index < 20 else path,
-                    id=path.plain,
-                )
+                Option(highlight_offsets(path, offsets), id=path.plain)
                 for index, (score, offsets, path) in enumerate(scores)
             ]
         )
@@ -250,6 +249,7 @@ class PathSearch(containers.VerticalGroup):
 
     def action_dismiss(self) -> None:
         self.post_message(Dismiss(self))
+        self.filter = ""
 
     def on_show(self) -> None:
         self.focus()

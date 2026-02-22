@@ -101,7 +101,7 @@ class FuzzyIndex:
                         or slash_query in normalized_path
                     ),
                     None,
-                    100,
+                    40,
                 )
             )
             if candidates:
@@ -116,7 +116,7 @@ class FuzzyIndex:
                         if query in normalized_path or slash_query in normalized_path
                     ),
                     None,
-                    100,
+                    40,
                 )
             )
             return candidates
@@ -142,7 +142,7 @@ class FuzzyIndex:
                     if count >= minimum_shared_trigrams
                 ),
                 None,
-                1000,
+                10000,
             )
         )
         candidates = list(unique_candidates.keys())
