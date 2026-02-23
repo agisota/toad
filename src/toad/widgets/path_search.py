@@ -442,7 +442,7 @@ class PathSearch(containers.VerticalGroup):
             content.plain, list(content.spans), cell_length=content.cell_length
         )
 
-    @work
+    @work(description="watch_paths")
     async def watch_paths(self, paths: list[Path]) -> None:
 
         self.option_list.highlighted = None
@@ -477,7 +477,7 @@ class PathSearch(containers.VerticalGroup):
 
         self.post_message(PromptSuggestion(""))
 
-    @work
+    @work(description="update_paths")
     async def _update_paths(self, paths: list[str]) -> None:
         """Update the paths index.
 
