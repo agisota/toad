@@ -76,6 +76,7 @@ def main(ctx, version):
     """🐸 Toad — AI for your terminal."""
     if version:
         from toad import get_version
+
         click.echo(get_version())
         ctx.exit()
     # If no command and no version flag, let the default command handling proceed
@@ -111,7 +112,14 @@ def main(ctx, version):
     help="Public URL to use in conjunction with --serve",
 )
 @click.option("-s", "--serve", is_flag=True, help="Serve Toad as a web application")
-def run(port: int, host: str, serve: bool, project_dir: str = ".", agent: str = "1", public_url: str | None = None):
+def run(
+    port: int,
+    host: str,
+    serve: bool,
+    project_dir: str = ".",
+    agent: str = "1",
+    public_url: str | None = None,
+):
     """Run an installed agent (same as `toad PATH`)."""
 
     check_directory(project_dir)
@@ -290,7 +298,10 @@ def replay(path: str) -> None:
 def serve(port: int, host: str, public_url: str | None = None) -> None:
     """Serve Toad as a web application."""
     from textual_serve.server import Server
-    server = Server(sys.argv[0], host=host, port=port, title="Toad", public_url=public_url)
+
+    server = Server(
+        sys.argv[0], host=host, port=port, title="Toad", public_url=public_url
+    )
     set_process_title("toad serve")
     server.serve()
 

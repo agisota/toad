@@ -305,9 +305,7 @@ class ToadApp(App, inherit_bindings=False):
         self.temporary_background_screen: Screen | None = None
 
         super().__init__()
-        self.project_dir = (
-            None if project_dir is None else Path(project_dir).expanduser().resolve()
-        )
+        self.project_dir = Path(project_dir or "./").expanduser().resolve()
 
     @property
     def config_path(self) -> Path:
@@ -656,7 +654,6 @@ class ToadApp(App, inherit_bindings=False):
         if mode := self._initial_mode:
             self.switch_mode(mode)
         else:
-            self.notify("new_screen")
             await self.new_session_screen(self.get_main_screen)
 
         self.update_terminal_title()
