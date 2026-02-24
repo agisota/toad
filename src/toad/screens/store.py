@@ -400,14 +400,15 @@ class StoreScreen(Screen):
             "\n",
             (
                 Content.from_markup(
-                    "\nConsider sponsoring [@click=screen.url('https://github.com/sponsors/willmcgugan')]@willmcgugan[/] to support future updates"
+                    "\nClick and hold to zoom the fractal, [b dim]ctrl+click[/] to zoom out."
                 )
             ),
             "\n\n",
             (
                 Content.from_markup(
-                    "[dim]Code: [@click=screen.url('https://github.com/batrachianai/toad')]Repository[/] "
-                    "Bugs: [@click=screen.url('https://github.com/batrachianai/toad/discussions')]Discussions[/]"
+                    "[dim]Code: [@click=screen.url('https://github.com/batrachianai/toad')]Repository[/] • "
+                    "Bugs: [@click=screen.url('https://github.com/batrachianai/toad/discussions')]Discussions[/] • "
+                    "Sponsor: [@click=screen.url('https://github.com/sponsors/willmcgugan')]@willmcgugan[/]"
                 )
             ),
         )
