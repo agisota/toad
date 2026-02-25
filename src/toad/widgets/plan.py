@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
+from typing import Self
 
 from textual.app import ComposeResult
 from textual.content import Content
@@ -64,9 +67,18 @@ class Plan(containers.Grid):
         priority: str
         status: str
 
-    entries: reactive[list[Entry] | None] = reactive(None, recompose=True)
+        def update_status(self, status: str) -> Plan.Entry:
+            """Get a new Entry with updated status.
 
-    LEFT = Content.styled("▌", "$error-muted on transparent r")
+            Args:
+                status: New status
+
+            Returns:
+                New Entry instance.
+            """
+            return Plan.Entry(self.content, self.priority, status)
+
+    entries: reactive[list[Entry] | None] = reactive(None, recompose=True)
 
     PRIORITIES = {
         "high": pill("H", "$error-muted", "$text-error"),
@@ -124,7 +136,7 @@ class Plan(containers.Grid):
         if status == "completed":
             return Content.from_markup("[$text-primary] ✔ ")
         elif status == "pending":
-            return Content.styled("⏳ ")
+            return Content.styled(" • ")
         elif status == "in_progress":
             return Content.from_markup("👉 ")
         return Content()
@@ -135,41 +147,36 @@ if __name__ == "__main__":
 
     entries = [
         Plan.Entry(
-            Content("This entry is already completee"),
+            Content("Build the best damn UI for agentic coding in the terminal"),
             "hide",
-            "completed",
-        ),
-        Plan.Entry(
-            Content.from_markup(
-                "Build the best damn UI for agentic coding in the terminal"
-            ),
-            "high",
             "in_progress",
         ),
-        Plan.Entry(Content.from_markup("???"), "medium", "pending"),
         Plan.Entry(
-            Content.from_markup("[b]Profit[/b]. Retire to Costa Rica"),
+            Content(
+                "Embarass big tech by being the only agent CLI that can render Markdown tables"
+            ),
+            "high",
+            "pending",
+        ),
+        Plan.Entry(
+            Content.from_markup("Catch flight to Wuhan"),
             "low",
             "pending",
         ),
-    ]
-
-    new_entries = [
         Plan.Entry(
-            Content("This entry is already completee"),
-            "hide",
-            "completed",
+            Content.from_markup("Eat 热干面 for breakfast"),
+            "low",
+            "pending",
+        ),
+        Plan.Entry(
+            Content.from_markup("Pack sunscreen, catch flight to Thailand"),
+            "low",
+            "pending",
         ),
         Plan.Entry(
             Content.from_markup(
-                "Build the best damn UI for agentic coding in the terminal"
+                "Work as a digital nomad in Asia, eat well, don't get sun-stroke"
             ),
-            "high",
-            "completed",
-        ),
-        Plan.Entry(Content.from_markup("???"), "medium", "pending"),
-        Plan.Entry(
-            Content.from_markup("[b]Profit[/b]. Retire to Costa Rica"),
             "low",
             "pending",
         ),
@@ -181,14 +188,32 @@ if __name__ == "__main__":
         CSS = """
         Screen {
             align: center middle;
+            Plan {
+                margin: 1;
+            }
         }
         """
+
+        def __init__(self) -> None:
+            super().__init__()
+            self.working = 0
 
         def compose(self) -> ComposeResult:
             yield Plan(entries)
 
         def action_strike(self) -> None:
+            new_entries = entries.copy()
+            new_entries[self.working] = entries[self.working].update_status("completed")
+            self.working += 1
+            try:
+                new_entries[self.working] = entries[self.working].update_status(
+                    "in_progress"
+                )
+            except IndexError:
+                pass
+
             self.query_one(Plan).entries = new_entries
+            entries[:] = new_entries
 
     app = PlanApp()
     app.run()
