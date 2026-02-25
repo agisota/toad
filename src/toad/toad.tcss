@@ -67,14 +67,19 @@ App.-hide-info-bar #info-container {
 }
 
 App.-compact-input {    
-    Prompt {        
+    Prompt {           
+        &.-mode-ask #prompt-container {
+            border: tall $primary !important;
+            &:focus-within {
+                border: tall $primary !important;
+            }   
+        }
         #prompt-container {
             border: none;
             &:focus-within {
                 border: none;
             }   
-            margin: 0 0 0 0;
-            
+            margin: 0 0 0 0;            
         }        
         #info-container {
             margin: 0 0;        
