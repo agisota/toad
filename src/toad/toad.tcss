@@ -69,7 +69,7 @@ App.-hide-info-bar #info-container {
 App.-compact-input {    
     Prompt {           
         &.-mode-ask #prompt-container {
-            border: tall $primary !important;
+            border: tall transparent !important;
             &:focus-within {
                 border: tall $primary !important;
             }   
