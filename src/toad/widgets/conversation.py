@@ -923,8 +923,9 @@ class Conversation(containers.Vertical):
     ) -> None:
         self.working_directory = str(Path(event.path).resolve().absolute())
 
-    def watch_busy_count(self, busy: int) -> None:
-        self.throbber.set_class(busy > 0, "-busy")
+    async def watch_busy_count(self, busy: int) -> None:
+        if (throbber := self.query_one_optional("#throbber")) is not None:
+            throbber.set_class(busy > 0, "-busy")
 
     @on(acp_messages.UpdateStatusLine)
     async def on_update_status_line(self, message: acp_messages.UpdateStatusLine):
