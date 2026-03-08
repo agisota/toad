@@ -803,6 +803,7 @@ class Conversation(containers.Vertical):
                 await self.shell_history.append(event.body)
                 self.shell_history_index = 0
                 await self.post_shell(event.body)
+            self.window.scroll_end(animate=False)
         elif text := event.body.strip():
             await self.prompt_history.append(event.body)
             self.prompt_history_index = 0
@@ -810,6 +811,7 @@ class Conversation(containers.Vertical):
                 # Toad has processed the slash command.
                 return
             await self.post(UserInput(text))
+            self.window.scroll_end(animate=False)
             self._loading = await self.post(Loading("Please wait..."), loading=True)
             await asyncio.sleep(0)
             self.send_prompt_to_agent(text)
@@ -1388,6 +1390,7 @@ class Conversation(containers.Vertical):
             self.agent_ready = True
 
         self.update_title()
+        self.window.anchor()
 
     def _settings_changed(self, setting_item: tuple[str, str]) -> None:
         key, value = setting_item
@@ -1487,7 +1490,6 @@ class Conversation(containers.Vertical):
         self,
         widget: WidgetType,
         *,
-        anchor: bool = True,
         loading: bool = False,
         new_block: bool = True,
     ) -> WidgetType:
@@ -1495,7 +1497,6 @@ class Conversation(containers.Vertical):
 
         Args:
             widget: Widget to post.
-            anchor: Anchor to bottom of view?
             loading: Set the widget to an initial loading state?
             new_block: Start a new block?
 
@@ -1511,8 +1512,6 @@ class Conversation(containers.Vertical):
         await self.contents.mount(widget)
 
         widget.loading = loading
-        if anchor:
-            self.window.anchor()
         self._require_check_prune = True
         self.call_after_refresh(self.check_prune)
         return widget
