@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Re-neabled experimental GC management via Rich
 - The `end` key will now scroll the conversation to the end, if the cursor is already at the end of the prompt 
 
+### Added
+
+- Added Cursor to store
+
 ## [0.6.8] - 2026-03-03
 
 ### Fixed
