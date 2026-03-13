@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.6.11] - 2026-03-13
 
-### Changed
+### Added
 
 - Added prompt message to settings
 
@@ -389,6 +389,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release. This document will be updated for subsequent releases.
 
+[0.6.11]: https://github.com/batrachianai/toad/compare/v0.6.10...v0.6.11
+[0.6.10]: https://github.com/batrachianai/toad/compare/v0.6.9...v0.6.10
 [0.6.9]: https://github.com/batrachianai/toad/compare/v0.6.8...v0.6.9
 [0.6.8]: https://github.com/batrachianai/toad/compare/v0.6.7...v0.6.8
 [0.6.7]: https://github.com/batrachianai/toad/compare/v0.6.6...v0.6.7
