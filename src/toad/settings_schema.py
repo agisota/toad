@@ -34,6 +34,13 @@ SCHEMA: list[SchemaDict] = [
                 ],
             },
             {
+                "key": "prompt_message",
+                "title": "Prompt message",
+                "help": "Text shown as placeholder in prompt text area",
+                "type": "string",
+                "default": "How can I help you today?",
+            },
+            {
                 "key": "compact-input",
                 "title": "Compact text input?",
                 "help": "Remove border and margin around the text area for additional space",

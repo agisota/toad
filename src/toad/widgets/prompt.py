@@ -599,8 +599,9 @@ class Prompt(containers.VerticalGroup):
             )
             self.remove_class("-shell-mode")
 
+            prompt_message = self.app.settings.get("ui.prompt_message", str)
             self.prompt_text_area.placeholder = Content.assemble(
-                "What would you like to do?\t".expandtabs(8),
+                f"{prompt_message}\t".expandtabs(8),
                 ("▌!▐", "r"),
                 " shell ",
                 ("▌/▐", "r"),
